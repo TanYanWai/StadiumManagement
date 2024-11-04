@@ -1,0 +1,132 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #FEF3E2;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px 0 20px; /* Top padding to avoid header overlap */
+    text-align: center;
+}
+
+.header {
+    background-color: #000000;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+.container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="file"],
+input[type="date"],
+input[type="time"],
+input[type="email"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.submit {
+    background-color: #464242;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.submit:hover {
+    background-color: #5c5656;
+}
+
+#eventDatesContainer input {
+    margin-bottom: 10px;
+}
+
+#addDateButton {
+    background-color: #464242;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+#addDateButton:hover {
+    background-color: #5c5656;
+}
+
+.footerbox {
+    background-color: #292929;
+    color: white;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    input[type="date"],
+    input[type="time"],
+    input[type="email"],
+    textarea,
+    select {
+        font-size: 14px;
+    }
+
+    .submit {
+        font-size: 14px;
+    }
+}

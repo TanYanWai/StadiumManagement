@@ -1,0 +1,284 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FEF3E2;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #000000;
+    color: white;
+}
+
+/* Navigation container styling */
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1; /* Allow the navigation to grow and take available space */
+}
+
+/* Adjust search container styling */
+.search-container {
+    flex-grow: 1; /* Allow search bar to take available space */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    margin-left: 30px;
+}
+
+/* Search input styling */
+.search-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #000000; /* Light border for the input */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the input text */
+    outline: none; /* Remove default outline */
+    background-color: #f1f1f1; /* White background color for the input */
+}
+
+/* Search button styling */
+.search-button {
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-left: 5px; /* Space between input and button */
+    display: flex;
+    align-items: center;
+}
+
+.search-button i {
+    font-size: 16px; /* Icon size */
+}
+
+/* Button hover effect */
+.search-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Logo styling */
+.logo {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-size: 24px; /* Font size for the logo */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+/* Navigation links styling */
+.nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allow nav links to wrap if necessary */
+    margin-left: 20px;
+}
+
+
+/* Navigation link styling */
+.nav-link {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply font to navigation links */
+    font-weight: 100; /* Extra light weight */
+    background-color: #292929; /* Background color for links */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    border: 2px solid #000000; /* Correct border color and width */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the links */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth background color and scale transition */
+}
+
+/* Optional: Add hover effect for better UX */
+.nav-link:hover {
+    background-color: #3c3c3c; /* Darker background on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.nav-link:active {
+    background-color: #004080; /* Even darker blue when pressed */
+    transform: scale(1); /* Reset scale on button press */
+}
+
+.button-container {
+    display: flex; /* Use Flexbox for positioning */
+    justify-content: center; /* Center the buttons horizontally */
+    margin-left: 20px;
+    height: 40px;
+}
+
+#userProfileLink {
+    color: #000;
+}
+
+/* Login and Signup button styling */
+.buttonLog {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply to buttons */
+    font-weight: 100; /* Extra light weight */
+    background-color: #464242; /* Blue background color */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    font-size: 16px; /* Font size */
+    border: 2px solid #000000;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.buttonLog:hover {
+    background-color: #5c5656; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.buttonLog:active {
+    background-color: #004080; /* Even darker blue when pressed */
+    transform: scale(1); /* Reset scale on button press */
+}
+
+.ProfileContainer {
+    display: block;
+    padding: 10px 20px; 
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Text color */
+    transition: background-color 0.3s ease;
+}
+
+.ProfileContainer:hover {
+    background-color: #ddd; /* Change background on hover */
+    cursor: pointer;
+}
+
+.ProfileContainer div {
+    font-size: 1.2em;
+}
+
+.legend-container{
+    text-align: center;
+    padding: 20px;
+    background-color: #2b2b2b;
+    color: white;
+}
+
+.legend {
+    margin: 10px;
+    text-align: center;
+}
+
+.legend span {
+    display: inline-block;
+    width: 80px;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
+.seat-container {
+    display: flex;
+    flex-wrap: wrap; /* Wrap to the next line after a row of seats */
+    max-width: 1500px; /* Adjust depending on seat size */
+    margin: 20px auto; /* Center the container horizontally */
+    justify-content: center;
+    align-items: center; /* Center vertically */
+    background-color: #e2eee3;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 20px; /* Add padding inside the container */
+    border-radius: 10px; /* Optional: add rounded corners */
+}
+
+
+.seat {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    border-radius: 2px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    background-color: #4CAF50;
+    color: white;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth background color and scale transition */
+}
+
+/* Correct hover selector */
+.seat:hover {
+    background-color: #41ae44; /* Darker background on hover */
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Additional styles for booked and selected states */
+.seat.booked {
+    background-color: #f44336; /* Red for booked seats */
+}
+
+.seat.selected {
+    background-color: #ff9800; /* Orange for selected seats */
+}
+
+.available{
+    background-color: #4CAF50;
+}
+
+.selected {
+    background-color: #ff9800; /* Orange for selected seats */
+}
+
+.booked {
+    background-color: red;
+    cursor: not-allowed;
+}
+
+.confirm-button {
+    display: block;
+    width: 150px;
+    padding: 10px;
+    margin: 20px auto;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth background color and scale transition */
+}
+
+.confirm-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.event-days {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.footerbox {
+    width: 100%; /* Full width of the viewport */
+    height: 230px; /* Fixed height */
+    background-color: #000000; /* Background color */
+    color: #fff; /* Text color */
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    flex-shrink: 0; /* Ensure footer doesn't shrink */
+    position: relative; /* Remove fixed positioning */
+    padding: 15px;
+}
+
+.footerbox p {
+    margin: 0; /* Remove default margin */
+    font-size: 16px; /* Font size for the text */
+}

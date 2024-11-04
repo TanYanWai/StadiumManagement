@@ -1,0 +1,288 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,500;1,400;1,600;1,700&display=swap');
+
+* {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing:border-box
+}
+
+html, body {
+    height: 100%; /* Ensure the page takes up the full viewport height */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Make the body a flex container */
+}
+
+body {
+    background-color: #FEF3E2; /* Light grey background color for the whole page */
+    font-family: "Poppins", sans-serif;
+    flex-grow: 1; /* Allow body content to grow */
+}
+
+.header {
+    background-color: #000000; /* Dark background color for the header */
+    padding: 15px 20px; /* Padding around the header */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space out items */
+    width: 100%; /* Full width of the page */
+    top: 0; /* Align to the top of the viewport */
+    z-index: 100; /* Ensure the header stays above other content */
+}
+
+/* Navigation container styling */
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1; /* Allow the navigation to grow and take available space */
+}
+
+/* Adjust search container styling */
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    width: 700px; /* Fixed width for the search bar */
+    height: 40px; /* Fixed height for the search bar container */
+    margin-right: 40px; /* Space between the logo and the search bar */
+}
+
+/* Search input styling */
+.search-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #000000; /* Light border for the input */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the input text */
+    outline: none; /* Remove default outline */
+    background-color: #f1f1f1; /* White background color for the input */
+}
+
+/* Search button styling */
+.search-button {
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-left: 5px; /* Space between input and button */
+    display: flex;
+    align-items: center;
+}
+
+.search-button i {
+    font-size: 16px; /* Icon size */
+}
+
+/* Button hover effect */
+.search-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Logo styling */
+.logo {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-size: 24px; /* Font size for the logo */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+/* Navigation links styling */
+.nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allow nav links to wrap if necessary */
+    margin-right: 20px;
+}
+
+
+/* Navigation link styling */
+.nav-link {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply font to navigation links */
+    font-weight: 100; /* Extra light weight */
+    background-color: #292929; /* Background color for links */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    border: 2px solid #000000; /* Correct border color and width */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the links */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth background color and scale transition */
+}
+
+/* Optional: Add hover effect for better UX */
+.nav-link:hover {
+    background-color: #3c3c3c; /* Darker background on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.nav-link:active {
+    background-color: #004080; /* Even darker blue when pressed */
+    transform: scale(1); /* Reset scale on button press */
+}
+
+.ProfileContainer {
+    display: block;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Text color */
+    transition: background-color 0.3s ease;
+}
+
+.ProfileContainer:hover {
+    background-color: #ddd; /* Change background on hover */
+    cursor: pointer;
+}
+
+.ProfileContainer div {
+    font-size: 1.2em;
+}
+
+.profile-container {
+    width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* Make it a flexbox container */
+    justify-content: space-between; /* Space out the content */
+    height: calc(100vh - 500px); /* Ensure container takes most of the viewport height */
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: space-between; /* Ensure buttons are spaced apart */
+    margin-top: auto; /* Push buttons to the bottom */
+}
+
+.button-edit {
+    background-color: #4CAF50;
+    padding: 10px 20px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.button-edit:hover {
+    background-color: #45a049;
+}
+
+.button-logout {
+    background-color: #f44336;
+    padding: 10px 20px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+
+.profile-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.profile-details {
+    margin-bottom: 20px;
+}
+
+.profile-details p {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: space-between; /* Ensure buttons are spaced apart */
+    margin-top: auto; /* Push buttons to the bottom */
+}
+
+.profile-actions a {
+    padding: 10px 20px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.button-edit {
+    background-color: #2e2e2e;
+    padding: 10px 20px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.button-edit:hover {
+    background-color: #000000;
+}
+
+.button-logout {
+    background-color: #f44336;
+    padding: 10px 20px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.button-logout:hover {
+    background-color: #e53935;
+}
+
+/* Example for edit profile form */
+.edit-profile-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+
+
+.footerbox {
+    width: 100%; /* Full width of the viewport */
+    height: 230px; /* Fixed height */
+    background-color: #000000; /* Background color */
+    color: #fff; /* Text color */
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    flex-shrink: 0; /* Ensure footer doesn't shrink */
+}
+
+.footerbox p {
+    margin: 0; /* Remove default margin */
+    font-size: 16px; /* Font size for the text */
+}
+
+

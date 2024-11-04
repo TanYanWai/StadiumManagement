@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Take Attendance</title>
+    <script type="module">
+        import QrScanner from './node_modules/qr-scanner/qr-scanner.min.js'; // Ensure the path is correct
+
+        // Set the path for the worker file
+        QrScanner.WORKER_PATH = './node_modules/qr-scanner/qr-scanner-worker.min.js'; // Adjust the path as necessary
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoElem = document.getElementById('qr-video');
+            const scanner = new QrScanner(videoElem, result => {
+                console.log('Decoded QR Code:', result.data); // Log the raw data
+                sendQRCode(result.data); // Send the QR code data to the server
+            }, {
+                highlightScanRegion: true,
+            });
+
+            document.getElementById('start-scan').addEventListener('click', () => {
+                scanner.start();
+            });
+
+            document.getElementById('stop-scan').addEventListener('click', () => {
+                scanner.stop();
+            });
+
+            // Function to send QR code data to PHP for updating attendance
+            function sendQRCode(qrCodeData) {
+                fetch('UpdateAttendance.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ qr_code: qrCodeData }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response from server:', data); // Log the server response
+                    if (data.success) {
+                        alert('Attendance marked successfully!');
+                    } else {
+                        alert('Error marking attendance: ' + data.message);
+                    }
+                })
+                .catch(err => console.error('Error:', err));
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Admin - Take Attendance</h1>
+    <video id="qr-video" style="width: 100%; height: auto;"></video> <!-- Video element to show the camera -->
+    <button id="start-scan">Start Scan</button>
+    <button id="stop-scan">Stop Scan</button>
+</body>
+</html>
