@@ -1,0 +1,191 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,500;1,400;1,600;1,700&display=swap');
+
+* {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+html, body {
+    background-color: #FEF3E2; /* Light grey background color for the whole page */
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    overflow-y: auto; /* Allow vertical scrolling */
+    height: 100%; /* Ensure the body takes up full viewport height */
+}
+
+.header {
+    background-color: #000000; /* Dark background color for the header */
+    padding: 15px 20px; /* Padding around the header */
+    position: relative; /* This ensures the search container can be absolutely positioned relative to the header */
+}
+
+.main {
+    display: flex;
+    flex-direction: column; /* Ensure children are stacked vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    min-height: 100vh; /* Ensure it fills the viewport height at a minimum */
+    padding: 20px; /* Optional: Add padding if needed */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+
+/* Navigation container styling */
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space out items */
+} 
+
+.nav {
+    display: flex;
+    justify-content: flex-start; /* Align navigation links to the left */
+    gap: 1px; /* Space between navigation links */
+    padding: 0; /* Ensure no extra padding is added */
+    margin: 0; /* Ensure no extra margin is added */
+    position: relative; /* Allows for proper positioning adjustments if needed */
+    margin-left:800px; /* Adjust this value to move the nav container */
+}
+
+/* Navigation link styling */
+.nav-link {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply font to navigation links */
+    font-weight: 100; /* Extra light weight */
+    background-color: #292929; /* Background color for links */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    border: 2px solid #000000; /* Correct border color and width */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the links */
+}
+
+/* Optional: Add hover effect for better UX */
+.nav-link:hover {
+    background-color: #3c3c3c; /* Darker background on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.nav-link:active {
+    background-color: #ffffff; /* Even darker blue when pressed */
+    transform: scale(1); /* Reset scale on button press */
+}
+
+.logo {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-size: 24px; /* Font size for the logo */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+    background-color: #FEF3E2; /* Light background for contrast */
+}
+
+.login-box {
+    background-color: #3C3D37;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    height: 550px;
+    margin-bottom: 250px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.login-box h4 {
+    margin-bottom: 40px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    color: #ffffff;
+    text-align: center; /* Center text horizontally */
+}
+
+.login-box h6 {
+    font-family: 'Roboto', sans-serif;
+    color: #d7d6d6;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+.input-group {
+    margin-bottom: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #ececec;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #F0EFEF;
+    border-radius: 4px;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.login-button {
+    width: 180px;
+    padding: 10px;
+    background-color: #C5001A;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    margin-left: 135px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.login-button:hover {
+    background-color: #b10119;  
+}
+
+
+.SignUp {
+    display: block;
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    text-align: center;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #ffffff;   
+}
+
+.SignUp:hover {
+    text-decoration: underline;
+}
+
+.footerbox {
+    width: 100%; /* Full width of the viewport */
+    height: 180px; /* Fixed height */
+    padding: 10px;
+    background-color: #000000; /* Background color (change as needed) */
+    color: #fff; /* Text color */
+    display: flex; /* Use flexbox to center content */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    margin-top: -250px;
+    padding-bottom: 150px;
+}
+
+.footerbox p {
+    margin: 0; /* Remove default margin */
+    font-size: 16px; /* Font size for the text */
+    color: #ffffff;
+}

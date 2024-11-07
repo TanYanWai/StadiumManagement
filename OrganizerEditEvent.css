@@ -1,0 +1,267 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,500;1,400;1,600;1,700&display=swap');
+
+* {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing:border-box
+}
+
+html, body {
+    background-color: #FEF3E2; /* Light grey background color for the whole page */
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    overflow-y: auto; /* Allow vertical scrolling */
+    height: 100%; /* Ensure the body takes up full viewport height */
+    display: flex;
+    flex-direction: column; /* Arrange children (main and footer) vertically */
+}
+
+.header {
+    background-color: #000000; /* Dark background color for the header */
+    padding: 10px 20px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space out items */
+    width: 100%; /* Full width of the page */
+    top: 0; /* Align to the top of the viewport */
+    z-index: 1000; /* Ensure the header stays above other content */
+}
+
+main {
+    flex-grow: 1; /* Take up remaining space */
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
+    padding: 15px;
+}
+
+/* Adjust search container styling */
+.search-container {
+    flex-grow: 1; /* Allow search bar to take available space */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    margin-left: 30px;
+}
+
+/* Search input styling */
+.search-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #000000; /* Light border for the input */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the input text */
+    outline: none; /* Remove default outline */
+    background-color: #f1f1f1; /* White background color for the input */
+}
+
+/* Search button styling */
+.search-button {
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-left: 5px; /* Space between input and button */
+    display: flex;
+    align-items: center;
+}
+
+.search-button i {
+    font-size: 16px; /* Icon size */
+}
+
+/* Button hover effect */
+.search-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Logo styling */
+.logo {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-size: 24px; /* Font size for the logo */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+/* Navigation links styling */
+.nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allow nav links to wrap if necessary */
+    margin-left: 20px;
+}
+
+
+/* Navigation link styling */
+.nav-link {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply font to navigation links */
+    font-weight: 100; /* Extra light weight */
+    background-color: #292929; /* Background color for links */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    border: 2px solid #000000; /* Correct border color and width */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the links */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth background color and scale transition */
+}
+
+/* Optional: Add hover effect for better UX */
+.nav-link:hover {
+    background-color: #3c3c3c; /* Darker background on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.nav-link:active {
+    background-color: #004080; /* Even darker blue when pressed */
+    transform: scale(1); /* Reset scale on button press */
+}
+
+.button-container {
+    display: flex; /* Use Flexbox for positioning */
+    justify-content: center; /* Center the buttons horizontally */
+    margin-left: 20px;
+    height: 40px;
+}
+
+#userProfileLink {
+    color: #000;
+}
+
+/* Login and Signup button styling */
+.buttonLog {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply to buttons */
+    font-weight: 100; /* Extra light weight */
+    background-color: #464242; /* Blue background color */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    font-size: 16px; /* Font size */
+    border: 2px solid #000000;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.buttonLog:hover {
+    background-color: #5c5656; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.buttonLog:active {
+    background-color: #000000; /* Even darker blue when pressed */
+    transform: scale(1); /* Reset scale on button press */
+}
+
+.ProfileContainer {
+    display: block;
+    padding: 10px 20px; 
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    color: #000000; /* Text color */
+    transition: background-color 0.3s ease;
+}
+
+.ProfileContainer:hover {
+    background-color: #ddd; /* Change background on hover */
+    cursor: pointer;
+}
+
+.ProfileContainer div {
+    font-size: 1.2em;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Main container to hold the content */
+.container {
+    background-color: #ffffff; /* White background for the container */
+    width: 80%; /* Set the width of the container */
+    margin: 20px auto; /* Center the container horizontally */
+    margin-top: 20px;
+    padding: 20px; /* Add some padding inside the container */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Style for the form elements */
+form {
+    display: flex;
+    flex-direction: column; /* Arrange the form elements vertically */
+    gap: 15px; /* Add space between each form element */
+}
+
+label {
+    font-weight: 600; /* Make labels bold */
+    color: #333333; /* Dark text color for labels */
+}
+
+input[type="text"], input[type="date"], input[type="time"], textarea, input[type="number"] {
+    width: 100%; /* Make inputs take full width of the form */
+    padding: 10px; /* Add padding inside inputs */
+    border: 1px solid #cccccc; /* Light border around inputs */
+    border-radius: 5px; /* Rounded corners for inputs */
+    font-size: 16px; /* Increase font size for readability */
+    transition: border-color 0.3s ease; /* Smooth transition on focus */
+}
+
+/* Focus state for inputs */
+input[type="text"]:focus, input[type="date"]:focus, input[type="time"]:focus, textarea:focus, input[type="number"]:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+textarea {
+    height: 150px; /* Set a fixed height for textarea */
+}
+
+/* Common styles for both buttons */
+.button-style {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Specific styling for the delete button */
+.delete-button {
+    background-color: red;
+    color: white;
+}
+
+/* Optional: Additional hover effects */
+.button-style:hover {
+    opacity: 0.9;
+}
+
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .container {
+        width: 95%; /* Make the container more fluid on small screens */
+    }
+}

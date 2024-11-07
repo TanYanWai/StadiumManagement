@@ -1,0 +1,243 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,500;1,400;1,600;1,700&display=swap');
+
+* {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing:border-box
+}
+
+html, body {
+    background-color: #FEF3E2; /* Light grey background color for the whole page */
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    overflow-y: auto; /* Allow vertical scrolling */
+    height: 100%; /* Ensure the body takes up full viewport height */
+    display: flex;
+    flex-direction: column; /* Arrange children (main and footer) vertically */
+}
+
+.header {
+    background-color: #000000; /* Dark background color for the header */
+    padding: 10px 20px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space out items */
+    width: 100%; /* Full width of the page */
+    top: 0; /* Align to the top of the viewport */
+    z-index: 1000; /* Ensure the header stays above other content */
+}
+
+.logo {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1; /* Allow the navigation to grow and take available space */
+}
+
+/* Adjust search container styling */
+.search-container {
+    flex-grow: 1; /* Allow search bar to take available space */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    margin-left: 20px;
+    height: 30px
+}
+
+/* Search input styling */
+.search-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #000000; /* Light border for the input */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the input text */
+    outline: none; /* Remove default outline */
+    background-color: #f1f1f1; /* White background color for the input */
+}
+
+/* Search button styling */
+.search-button {
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-left: 5px; /* Space between input and button */
+    display: flex;
+    align-items: center;
+}
+
+.search-button i {
+    font-size: 16px; /* Icon size */
+}
+
+/* Button hover effect */
+.search-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Logo styling */
+.logo {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-size: 24px; /* Font size for the logo */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+/* Navigation links styling */
+.nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allow nav links to wrap if necessary */
+    margin-left: 20px;
+}
+
+
+/* Navigation link styling */
+.nav-link {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply font to navigation links */
+    font-weight: 100; /* Extra light weight */
+    background-color: #292929; /* Background color for links */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    border: 2px solid #000000; /* Correct border color and width */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the links */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth background color and scale transition */
+}
+
+/* Optional: Add hover effect for better UX */
+.nav-link:hover {
+    background-color: #3c3c3c; /* Darker background on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+
+.button-container {
+    display: flex; /* Use Flexbox for positioning */
+    justify-content: center; /* Center the buttons horizontally */
+    margin-left: 20px;
+    height: 40px;
+}
+
+#userProfileLink {
+    color: #000;
+}
+
+.ProfileContainer {
+    display: block;
+    padding: 10px 20px; 
+    background-color: #f0f0f0; /* You can change this or remove it */
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none; /* Ensure no underline */
+    color: #333; /* Text color */
+    transition: background-color 0.3s ease;
+}
+
+/* Remove the button appearance for the user profile link */
+#userProfileLink {
+    color: #ffffff; /* Adjust color to match your design */
+    text-decoration: none; /* Remove underline */
+    padding: 0; /* Remove padding */
+    background-color: transparent; /* No background */
+    display: inline; /* Change display to inline */
+}
+
+.ProfileContainer:hover {
+    background-color: #ddd; /* Change background on hover */
+    cursor: pointer;
+}
+
+.ProfileContainer div {
+    font-size: 1.2em;
+}
+
+
+main {
+    margin: 50px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.UserLoginButton a, .UserSignupButton a {
+    color: white;
+    text-decoration: none;
+    padding: 0; /* Remove padding for a more seamless appearance */
+    border-radius: 0; /* No border radius */
+    background-color: transparent; /* No background color */
+    font-size: 1em; /* Adjust font size if needed */
+}
+
+.checkout-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+}
+
+h1 {
+    color: #4CAF50;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.confirm-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-button:hover {
+    background-color: #218838;
+}
+
+#timer {
+    font-weight: bold;
+    color: red;
+}
+
+.footerbox {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.footerbox p {
+    margin: 0;
+    font-size: 1.2em;
+}
