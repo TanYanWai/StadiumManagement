@@ -3,7 +3,7 @@ session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php"); // Redirect to login if not logged in
+    header("Location: login.html"); // Redirect to login if not logged in
     exit();
 }
 
@@ -67,10 +67,10 @@ $result = $stmt->get_result();
             <button class="search-button"><i class="fas fa-search"></i></button>
         </div>
         <nav class="nav">
-            <a href="UserHome.php" class="nav-link">Home</a>
-            <a href="UserEvent.html" class="nav-link">Events</a>
+        <a href="UserHome.php" class="nav-link">Home</a>
+            <a href="ChooseEvent.php" class="nav-link">Events</a>
             <a href="ContactUs.php" class="nav-link">Contact Us</a>
-            <a href="AboutUs.php" class="nav-link">About Us</a>
+            <a href="ChooseEvent.php" class="nav-link">Rate Event</a>
         </nav>
         <div class="button-container">
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -92,32 +92,28 @@ $result = $stmt->get_result();
 </header>
 
 <body>
-    <h1>Your Booked Events</h1>
+    <div class="container">
+        <h1>Your Booked Events</h1>
 
-    <table>
-        <tr>
-            <th>Event Title</th>
-            <th>Seat Number</th>
-            <th>Event Date</th>
-            <th>Rate Event</th>
-        </tr>
-        <?php while ($row = $result->fetch_assoc()) { ?>
+        <table>
             <tr>
-                <td><?php echo $row['event_title']; ?></td>
-                <td><?php echo $row['seat_number']; ?></td>
-                <td><?php echo $row['event_date']; ?></td>
-                <td>
-                    <a href="RateEvent.php?event_id=<?php echo $row['id']; ?>">Rate</a>
-                </td>
+                <th>Event Title</th>
+                <th>Seat Number</th>
+                <th>Event Date</th>
+                <th>Rate Event</th>
             </tr>
-        <?php } ?>
-    </table>
-    <div class="footerbox">
-        <p>Malaysia . Penang</p>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+                <tr>
+                    <td><?php echo $row['event_title']; ?></td>
+                    <td><?php echo $row['seat_number']; ?></td>
+                    <td><?php echo $row['event_date']; ?></td>
+                    <td>
+                        <a href="RateEvent.php?event_id=<?php echo $row['id']; ?>">Rate</a>
+                    </td>
+                </tr>
+            <?php } ?>
+        </table>
     </div>
-    <?php
-    $stmt->close();
-    $conn->close();
-    ?>
 </body>
+
 </html>

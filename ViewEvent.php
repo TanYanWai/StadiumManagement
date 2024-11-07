@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
     $eventSql = "
         SELECT e.id, e.event_title, e.event_time_from, e.event_time_to, 
                e.event_description, e.event_category, e.contact_person, 
-               e.contact_number, e.email, e.event_terms, ei.event_poster 
+               e.contact_number, e.email, e.event_terms, ei.event_poster, ei.image_path
         FROM events e
         LEFT JOIN event_images ei ON e.id = ei.event_id 
         WHERE e.id = ?";
@@ -109,9 +109,9 @@ if ($result->num_rows > 0) {
         </div>
         <nav class="nav">
             <a href="UserHome.php" class="nav-link">Home</a>
-            <a href="UserEvent.html" class="nav-link">Events</a>
+            <a href="ChooseEvent.php" class="nav-link">Rate Events</a>
             <a href="ContactUs.php" class="nav-link">Contact Us</a>
-            <a href="output_message.php" class="nav-link">About Us</a>
+            <a href="AboutUs.php" class="nav-link">About Us</a>
         </nav>
         <div class="button-container">
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -133,75 +133,73 @@ if ($result->num_rows > 0) {
 </header>
 
 <main>
-    <!-- Display Event Poster -->
-    <div class="event-poster">
-        <img src="uploads/<?php echo htmlspecialchars($event['event_poster']); ?>" alt="Event Poster" style="width:100%; max-height:400px;">
-    </div>
-
-    <!-- Event Title and Description -->
-    <div class="event-details-container">
-        <div class="event-title-description">
-            <h1><?php echo htmlspecialchars($event['event_title']); ?></h1>
-            <p><?php echo nl2br(htmlspecialchars($event['event_description'])); ?></p>
-        </div>
-
-        <!-- Event Images Section -->
-        <div class="event-images">
-            <h2>Event Images</h2>
-            <?php if (!empty($event_images)): ?>
-                <div class="image-display-container">
-                    <!-- Main Image -->
-                    <div class="main-image-container">
-                        <img id="mainImage" src="uploads/<?php echo htmlspecialchars($event_images[0]); ?>" alt="Event Image" class="main-event-image">
-                    </div>
-
-                    <!-- Thumbnails -->
-                    <div class="thumbnail-container">
-                        <?php foreach ($event_images as $image): ?>
-                            <img src="uploads/<?php echo htmlspecialchars($image); ?>" alt="Event Thumbnail" class="event-thumbnail" onclick="changeMainImage(this)">
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            <?php else: ?>
-                <p>No additional images available for this event.</p>
+    <div class="container">
+        <!-- Display Event Poster -->
+        <div class="event-poster">
+            <?php if (!empty($event['event_poster'])): ?>
+                <img src="uploads/<?php echo htmlspecialchars($event['event_poster']); ?>" alt="Event Poster" style="width:100%; max-height:400px;">
             <?php endif; ?>
         </div>
 
-        <!-- Event Information (Date, Time, Contact Details) -->
-        <div class="event-info">
-            <h2>Select Your Attendance Date</h2>
-            <?php if (!empty($event_dates)): ?>
-                <?php foreach ($event_dates as $date): ?>
-                    <div class="date-selection-container">
-                        <h3><?php echo htmlspecialchars($date); ?></h3>
-                        <button class="book-now-button" onclick="window.location.href='SelectSection.php?id=<?php echo $event['id']; ?>&date=<?php echo htmlspecialchars($date); ?>'">
-                            Book Now
-                        </button>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No available dates for this event.</p>
-            <?php endif; ?>
+        <!-- Event Title and Description -->
+        <div class="event-details-container">
+            <div class="event-title-description">
+                <h1><?php echo htmlspecialchars($event['event_title']); ?></h1>
+                <p><?php echo nl2br(htmlspecialchars($event['event_description'])); ?></p>
+            </div>
 
-            <p><strong>From:</strong> <?php echo htmlspecialchars($event['event_time_from']); ?></p>
-            <p><strong>To:</strong> <?php echo htmlspecialchars($event['event_time_to']); ?></p>
-            <p><strong>Category:</strong> <?php echo htmlspecialchars($event['event_category']); ?></p>
-            <p><strong>Contact Person:</strong> <?php echo htmlspecialchars($event['contact_person']); ?></p>
-            <p><strong>Contact Number:</strong> <?php echo htmlspecialchars($event['contact_number']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($event['email']); ?></p>
+            <!-- Event Images Section -->
+<?php if (!empty($event_images)): ?>
+    <div class="image-display-container">
+        <!-- Main Image -->
+        <div class="main-image-container">
+            <img id="mainImage" src="uploads/<?php echo urlencode($event_images[0]); ?>" alt="Event Image" class="main-event-image">
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="thumbnail-container">
+            <?php foreach ($event_images as $image): ?>
+                <img src="uploads/<?php echo urlencode($image); ?>" alt="Event Thumbnail" class="event-thumbnail" onclick="changeMainImage(this)">
+            <?php endforeach; ?>
         </div>
     </div>
+<?php else: ?>
+    <p>No additional images available for this event.</p>
+<?php endif; ?>
 
-    <!-- Terms and Conditions -->
-    <div class="terms-container">
-        <h2>Terms and Conditions</h2>
-        <p><?php echo nl2br(htmlspecialchars($event['event_terms'])); ?></p>
+
+            <!-- Event Information (Date, Time, Contact Details) -->
+            <div class="event-info">
+                <h2>Select Your Attendance Date</h2>
+                <?php if (!empty($event_dates)): ?>
+                    <?php foreach ($event_dates as $date): ?>
+                        <div class="date-selection-container">
+                            <h3><?php echo htmlspecialchars($date); ?></h3>
+                            <button class="book-now-button" onclick="window.location.href='SelectSection.php?id=<?php echo $event['id']; ?>&date=<?php echo htmlspecialchars($date); ?>'">
+                                Book Now
+                            </button>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No available dates for this event.</p>
+                <?php endif; ?>
+
+                <p><strong>From:</strong> <?php echo htmlspecialchars($event['event_time_from']); ?></p>
+                <p><strong>To:</strong> <?php echo htmlspecialchars($event['event_time_to']); ?></p>
+                <p><strong>Category:</strong> <?php echo htmlspecialchars($event['event_category']); ?></p>
+                <p><strong>Contact Person:</strong> <?php echo htmlspecialchars($event['contact_person']); ?></p>
+                <p><strong>Contact Number:</strong> <?php echo htmlspecialchars($event['contact_number']); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($event['email']); ?></p>
+            </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="terms-container">
+            <h2>Event Terms</h2>
+            <p><?php echo nl2br(htmlspecialchars($event['event_terms'])); ?></p>
+        </div>
     </div>
 </main>
-
-<div class="footerbox">
-    <p>Malaysia . Penang</p>
-</div>
 
 <script>
     function changeMainImage(thumbnail) {
@@ -209,6 +207,5 @@ if ($result->num_rows > 0) {
     }
 </script>
 
-<?php $conn->close(); ?>
 </body>
 </html>

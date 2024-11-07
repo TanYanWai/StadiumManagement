@@ -1,31 +1,172 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-}
-
-body {
-    background-color: #FEF3E2;
-    min-height: 100vh;
-    margin: 0;
+html, body {
+    height: 100%; /* Ensure the body takes full height */
+    margin: 0; /* Remove default margin */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 80px 20px 0 20px; /* Top padding to avoid header overlap */
-    text-align: center;
+    background-color: #FEF3E2; /* Set the background color */
+    flex-direction: column; /* Allow stacking of header and main content */
 }
 
-.header {
+header {
+    text-align: center;
+    padding: 20px;
     background-color: #000000;
-    padding: 15px 20px;
+    color: white;
+}
+
+/* Navigation container styling */
+.navigation {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: fixed;
+    flex: 1; /* Allow the navigation to grow and take available space */
+}
+
+/* Adjust search container styling */
+.search-container {
+    flex-grow: 1; /* Allow search bar to take available space */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    margin-left: 30px;
+}
+
+/* Search input styling */
+.search-input {
     width: 100%;
-    top: 0;
-    z-index: 10;
+    padding: 5px;
+    border: 1px solid #000000; /* Light border for the input */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the input text */
+    outline: none; /* Remove default outline */
+    background-color: #f1f1f1; /* White background color for the input */
+}
+
+/* Search button styling */
+.search-button {
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-left: 5px; /* Space between input and button */
+    display: flex;
+    align-items: center;
+}
+
+.search-button i {
+    font-size: 16px; /* Icon size */
+}
+
+/* Button hover effect */
+.search-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Logo styling */
+.logo {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-size: 24px; /* Font size for the logo */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+/* Navigation links styling */
+.nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allow nav links to wrap if necessary */
+    margin-left: 20px;
+}
+
+
+/* Navigation link styling */
+.nav-link {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply font to navigation links */
+    font-weight: 100; /* Extra light weight */
+    background-color: #292929; /* Background color for links */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    border: 2px solid #000000; /* Correct border color and width */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for the links */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth background color and scale transition */
+}
+
+/* Optional: Add hover effect for better UX */
+.nav-link:hover {
+    background-color: #3c3c3c; /* Darker background on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.nav-link:active {
+    background-color: #004080; /* Even darker blue when pressed */
+    transform: scale(1); /* Reset scale on button press */
+}
+
+.button-container {
+    display: flex; /* Use Flexbox for positioning */
+    justify-content: center; /* Center the buttons horizontally */
+    margin-left: 20px;
+    height: 40px;
+}
+
+#userProfileLink {
+    color: #000;
+}
+
+/* Login and Signup button styling */
+.buttonLog {
+    text-decoration: none;
+    color: #fff; /* White text color */
+    font-family: 'Roboto', sans-serif; /* Apply to buttons */
+    font-weight: 100; /* Extra light weight */
+    background-color: #464242; /* Blue background color */
+    padding: 10px 20px; /* Padding for button-like appearance */
+    font-size: 16px; /* Font size */
+    border: 2px solid #000000;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.buttonLog:hover {
+    background-color: #5c5656; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.buttonLog:active {
+    background-color: #004080; /* Even darker blue when pressed */
+    transform: scale(1); /* Reset scale on button press */
+}
+
+.ProfileContainer {
+    display: block;
+    padding: 10px 20px; 
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Text color */
+    transition: background-color 0.3s ease;
+}
+
+.ProfileContainer:hover {
+    background-color: #ddd; /* Change background on hover */
+    cursor: pointer;
+}
+
+.ProfileContainer div {
+    font-size: 1.2em;
+}
+
+/* Centering the main content */
+.main-content {
+    display: flex; /* Use Flexbox for alignment */
+    flex: 1; /* Allow it to grow and fill space */
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center */
 }
 
 .container {
@@ -33,10 +174,11 @@ body {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    width: 100%;
-    margin-top: 20px;
+    max-width: 800px; /* Maximum width of the container */
+    width: 100%; /* Full width */
+    margin: 20px; /* Add some margin for spacing */
 }
+
 
 form {
     display: flex;

@@ -107,13 +107,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Redirect after successful submission with the event ID
-        header("Location: EditSeatPrice.php?id=$eventId");
+        header("Location: OrganinzerEditSeatPrice.php?id=$eventId");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
-} else {
-    echo "Invalid request method: " . $_SERVER['REQUEST_METHOD']; // Debugging line
 }
 
 $conn->close();
@@ -141,6 +139,7 @@ $conn->close();
             <a href="OrganizerAddEvent.php" class="nav-link">Create Event</a>
             <a href="OrganizerSelectEvent.php" class="nav-link">Edit Event</a>
             <a href="OrganizerPublicity.php" class="nav-link">Publicity</a>
+            <a href="OrganizerScanQrcode.php" class="nav-link">Scan QR</a>
             <a href="OrganizerProfile.php" class="nav-link">Profile</a>
         </nav>
         <div class="button-container">
@@ -191,46 +190,42 @@ $conn->close();
                 <select id="eventCategory" name="event_category" required>
                     <option value="concert">Concert</option>
                     <option value="conference">Conference</option>
-                    <option value="workshop">Workshop</option>
-                    <!-- Add more categories as needed -->
+                    <option value="exhibition">Exhibition</option>
+                    <option value="sports">Sports</option>
                 </select>
-
-                <label for="eventTimeFrom">Event Time From:</label>
-                <input type="time" id="eventTimeFrom" name="event_time_from" required>
-
-                <label for="eventTimeTo">Event Time To:</label>
-                <input type="time" id="eventTimeTo" name="event_time_to" required>
 
                 <label for="contactPerson">Contact Person:</label>
                 <input type="text" id="contactPerson" name="contact_person" required>
 
                 <label for="contactNumber">Contact Number:</label>
-                <input type="text" id="contactNumber" name="contact_number" required>
+                <input type="tel" id="contactNumber" name="contact_number" required>
 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
 
-                <h3>Event Terms and Conditions</h3>
-                <textarea name="event_terms" rows="5" required></textarea>
+                <label for="eventTerms">Event Terms and Conditions:</label>
+                <textarea id="eventTerms" name="event_terms" rows="4" required></textarea>
 
-                <input type="submit" value="Submit Event" class="submit">
+                <h3>Event Time</h3>
+                <label for="eventTimeFrom">From:</label>
+                <input type="time" id="eventTimeFrom" name="event_time_from" required>
+                <label for="eventTimeTo">To:</label>
+                <input type="time" id="eventTimeTo" name="event_time_to" required>
+
+                <button type="submit">Create Event</button>
             </form>
         </div>
     </div>
 
-    <script>
-        document.getElementById('addDateButton').addEventListener('click', function() {
-            var container = document.getElementById('eventDatesContainer');
-            var newDateInput = document.createElement('input');
-            newDateInput.type = 'date';
-            newDateInput.name = 'event_dates[]';
-            newDateInput.required = true;
-            container.appendChild(newDateInput);
-        });
-    </script>
+<script>
+document.getElementById('addDateButton').addEventListener('click', function() {
+    var dateInput = document.createElement('input');
+    dateInput.type = 'date';
+    dateInput.name = 'event_dates[]';
+    dateInput.required = true;
+    document.getElementById('eventDatesContainer').appendChild(dateInput);
+});
+</script>
 
-    <div class="footerbox">
-        <p>Malaysia . Penang</p>
-    </div>
 </body>
 </html>

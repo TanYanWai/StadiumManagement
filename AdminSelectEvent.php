@@ -60,6 +60,7 @@ $conn->close();
             <a href="AdminAddEvent.php" class="nav-link">Create Event</a>
             <a href="AdminSelectEvent.php" class="nav-link">Edit Event</a>
             <a href="OrganizerRegistration.php" class="nav-link">Create account</a>
+            <a href="AdminScanQRCode.php" class="nav-link">Scan QR</a>
             <a href="AdminProfile.php" class="nav-link">Profile</a>
         </nav>
         <div class="button-container">

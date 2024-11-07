@@ -127,127 +127,52 @@ main {
     transform: scale(1.05);
 }
 
-.container {
-    max-width: 1200px;
-    width: 100%;
-    background-color: #dcdcdc;
-    border-radius: 5px;
-    margin: 40px auto;
-    overflow-x: auto; /* Enable scrolling if table is too wide */
-    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.1); /* Shadow change on hover */
+/* Main Content Styles */
+h1 {
+    text-align: center; /* Center the heading */
+    margin-bottom: 20px; /* Space below the heading */
 }
 
-.container:hover {
-    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.2); /* Shadow change on hover */
+/* Video Element */
+#qr-video {
+    display: block; /* Make the video block element */
+    max-width: 80%; /* Ensure it does not exceed container width */
+    height: auto; /* Maintain aspect ratio */
+    border: 2px solid #b2fb20; /* Green border around the video */
+    border-radius: 8px; /* Rounded corners */
+    margin: 0 auto; /* Center the video */
 }
 
-/* Style for the table */
-table {
-    width: 100%;
-    border-collapse: collapse;
+/* Button Styles for Scanning */
+button {
     margin-top: 20px;
-    min-width: 600px; /* Ensure minimum width for the table */
+    background-color: #b2fb20; /* Green background for buttons */
+    color: rgb(0, 0, 0); /* White text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding for buttons */
+    font-size: 1em; /* Button font size */
+    cursor: pointer; /* Change cursor to pointer */
+    margin: 10px; /* Space around buttons */
+    transition: background-color 0.3s; /* Smooth background transition */
 }
 
-table th, table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+button:hover {
+    background-color: #a8f708; /* Darken background on hover */
 }
 
-table th {
-    background-color: #292929;
-    color: white;
-    text-align: center;
-}
-
-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-button.edit-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-button.edit-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-button.edit-button:active {
-    background-color: #004080;
-    transform: scale(1);
-}
-
-/* Footer styles */
-.footerbox {
-    width: 100%;
-    height: 230px;
-    background-color: #000000;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    text-align: center; /* Center text */
-}
-
-.footerbox p {
-    margin: 0;
-    font-size: 16px;
-}
-
-/* Responsive design for smaller screens */
+/* Responsive Design */
 @media (max-width: 768px) {
-    nav ul li {
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    .container {
-        padding: 10px;
-    }
-
-    .navigation {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .search-container {
-        width: 100%;
-        margin-left: 0;
-        margin-bottom: 10px;
+    .header {
+        flex-direction: column; /* Stack header items on small screens */
+        align-items: flex-start; /* Align items to start */
     }
 
     .nav {
-        flex-direction: column;
-        margin-left: 0;
+        flex-direction: column; /* Stack nav links vertically */
     }
 
     .nav-link {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 5px;
-    }
-
-    .button-container {
-        justify-content: flex-start;
-        margin-left: 0;
-        margin-top: 10px;
-    }
-
-    table th, table td {
-        padding: 10px;
-    }
-
-    .container {
-        padding: 0 15px;
+        margin: 5px 0; /* Space between vertical links */
     }
 }

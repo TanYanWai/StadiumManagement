@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $seatStmt->execute();
     }
 
-    header("Location: OrganizerDashboard.php"); // Redirect after saving
+    header("Location: AdminDashboard.php"); // Redirect after saving
     exit();
 }
 
@@ -109,17 +109,19 @@ $conn->close();
     <title>Edit Event</title>
     <link rel="stylesheet" href="OrganizerEditEvent.css">
 </head>
+<body>
 <header class="header">
     <div class="navigation">
         <div class="brand">
             <a href="#" class="logo"><i class="fas fa-calendar-alt"></i><b>BookMyEvent</b></a>
         </div>
         <nav class="nav">
-            <a href="AdminDashboard.php" class="nav-link">Home</a>
-            <a href="AdminAddEvent.php" class="nav-link">Create Event</a>
-            <a href="AdminSelectEvent.php" class="nav-link">Edit Event</a>
-            <a href="OrganizerRegistration.php" class="nav-link">Create account</a>
-            <a href="AdminProfile.php" class="nav-link">Profile</a>
+            <a href="OrganizerDashboard.php" class="nav-link">Home</a>
+            <a href="OrganizerAddEvent.php" class="nav-link">Create Event</a>
+            <a href="OrganizerSelectEvent.php" class="nav-link">Edit Event</a>
+            <a href="OrganizerPublicity.php" class="nav-link">Publicity</a>
+            <a href="OrganizerScanQrcode.php" class="nav-link">Scan QR</a>
+            <a href="OrganizerProfile.php" class="nav-link">Profile</a>
         </nav>
         <div class="button-container">
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -139,34 +141,38 @@ $conn->close();
         </div>
     </div>
 </header>
-<body>
 
-<h1>Edit Event</h1>
+<div class="container"> <!-- Added container here -->
+    <h1>Edit Event</h1>
 
-<form method="POST">
-    <label for="event_title">Event Title:</label>
-    <input type="text" id="event_title" name="event_title" value="<?php echo htmlspecialchars($event['event_title']); ?>" required>
+    <form method="POST">
+        <label for="event_title">Event Title:</label>
+        <input type="text" id="event_title" name="event_title" value="<?php echo htmlspecialchars($event['event_title']); ?>" required>
 
-    <label for="event_date">Event Date:</label>
-    <input type="date" id="event_date" name="event_date" value="<?php echo htmlspecialchars($event['event_date']); ?>" required>
+        <label for="event_date">Event Date:</label>
+        <input type="date" id="event_date" name="event_date" value="<?php echo htmlspecialchars($event['event_date']); ?>" required>
 
-    <label for="event_time_from">Start Time:</label>
-    <input type="time" id="event_time_from" name="event_time_from" value="<?php echo htmlspecialchars($event['event_time_from']); ?>" required>
+        <label for="event_time_from">Start Time:</label>
+        <input type="time" id="event_time_from" name="event_time_from" value="<?php echo htmlspecialchars($event['event_time_from']); ?>" required>
 
-    <label for="event_time_to">End Time:</label>
-    <input type="time" id="event_time_to" name="event_time_to" value="<?php echo htmlspecialchars($event['event_time_to']); ?>" required>
+        <label for="event_time_to">End Time:</label>
+        <input type="time" id="event_time_to" name="event_time_to" value="<?php echo htmlspecialchars($event['event_time_to']); ?>" required>
 
-    <label for="event_description">Description:</label>
-    <textarea id="event_description" name="event_description" required><?php echo htmlspecialchars($event['event_description']); ?></textarea>
+        <label for="event_description">Description:</label>
+        <textarea id="event_description" name="event_description" required><?php echo htmlspecialchars($event['event_description']); ?></textarea>
 
-    <h2>Seat Prices</h2>
-    <?php foreach ($seats as $seat): ?>
-        <label for="seat_<?php echo $seat['id']; ?>">Seat Type: <?php echo htmlspecialchars($seat['seat_type']); ?></label>
-        <input type="number" id="seat_<?php echo $seat['id']; ?>" name="seats[<?php echo $seat['id']; ?>]" value="<?php echo htmlspecialchars($seat['seat_price']); ?>" step="0.01" required>
-    <?php endforeach; ?>
+        <h2>Seat Prices</h2>
+        <?php foreach ($seats as $seat): ?>
+            <label for="seat_<?php echo $seat['id']; ?>">Seat Type: <?php echo htmlspecialchars($seat['seat_type']); ?></label>
+            <input type="number" id="seat_<?php echo $seat['id']; ?>" name="seats[<?php echo $seat['id']; ?>]" value="<?php echo htmlspecialchars($seat['seat_price']); ?>" step="0.01" required>
+        <?php endforeach; ?>
 
-    <input type="submit" value="Save Changes">
-</form>
+        <input type="submit" value="Save Changes">
+
+        <!-- Delete event button -->
+        <button type="submit" name="delete_event" onclick="return confirm('Are you sure you want to delete this event?');" style="background-color: red; color: white;">Delete Event</button>
+    </form>
+</div> <!-- Close container div -->
 
 </body>
 </html>

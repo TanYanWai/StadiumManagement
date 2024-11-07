@@ -68,9 +68,9 @@ $eventResult = $conn->query($eventSql);
         </div>
         <nav class="nav">
             <a href="UserHome.php" class="nav-link">Home</a>
-            <a href="ChooseEvent.php" class="nav-link">Events</a>
+            <a href="ChooseEvent.php" class="nav-link">Rate Events</a>
             <a href="ContactUs.php" class="nav-link">Contact Us</a>
-            <a href="ChooseEvent.php" class="nav-link">Rate Event</a>
+            <a href="AboutUs.php" class="nav-link">About Us</a>
         </nav>
         <div class="button-container">
             <?php if (isset($_SESSION['user_id'])): ?>

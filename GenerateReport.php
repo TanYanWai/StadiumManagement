@@ -61,7 +61,7 @@ if (isset($_POST['event_id'])) {
     $reportContent .= '<p>Total Attendance: ' . htmlspecialchars($totalAttendance) . '</p>';
     $reportContent .= '<p>Total Missed: ' . htmlspecialchars($totalMissed) . '</p>';
 
-    // Sentiment Analysis Data (if you implement it)
+    // Sentiment Analysis Data
     $reportContent .= '<h2>Sentiment Analysis</h2>';
     $reportContent .= '<p>Positive Feedback: ' . htmlspecialchars($positiveCount) . '</p>';
     $reportContent .= '<p>Neutral Feedback: ' . htmlspecialchars($neutralCount) . '</p>';

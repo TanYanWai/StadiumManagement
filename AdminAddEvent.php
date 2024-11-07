@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Redirect after successful submission with the event ID
-        header("Location: EditSeatPrice.php?id=$eventId");
+        header("Location: AdminEditSeatPrice.php?id=$eventId");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
@@ -139,6 +139,7 @@ $conn->close();
             <a href="AdminAddEvent.php" class="nav-link">Create Event</a>
             <a href="AdminSelectEvent.php" class="nav-link">Edit Event</a>
             <a href="OrganizerRegistration.php" class="nav-link">Create account</a>
+            <a href="AdminScanQRCode.php" class="nav-link">Scan QR</a>
             <a href="AdminProfile.php" class="nav-link">Profile</a>
         </nav>
         <div class="button-container">

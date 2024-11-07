@@ -29,6 +29,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Fetch the username based on the stored user ID
+$userSql = "SELECT username FROM users WHERE id = ?";
+$stmt = $conn->prepare($userSql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+    $user_name = htmlspecialchars($user['username']);
+}
+
 $conn->close();
 ?>
 
@@ -36,9 +48,12 @@ $conn->close();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
-    <link rel="stylesheet" href="ContactUS.css"> 
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="ContactUs.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -54,8 +69,8 @@ $conn->close();
         <nav class="nav">
             <a href="UserHome.php" class="nav-link">Home</a>
             <a href="UserEvent.html" class="nav-link">Events</a>
-            <a href="Message.html" class="nav-link">Learn More</a>
-            <a href="output_message.php" class="nav-link">About Us</a>
+            <a href="ContactUs.php" class="nav-link">Contact Us</a>
+            <a href="AboutUs.php" class="nav-link">About Us</a>
         </nav>
         <div class="button-container">
             <?php if (isset($_SESSION['user_id'])): ?>

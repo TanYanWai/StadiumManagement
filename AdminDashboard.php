@@ -20,7 +20,7 @@ if (isset($_SESSION['user_id'])) {
     }
 
     // Fetch the username from the users table
-    $sql = "SELECT username, user_role FROM users WHERE id = ?";
+    $sql = "SELECT username FROM users WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -28,27 +28,34 @@ if (isset($_SESSION['user_id'])) {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        $user_name = $user['username']; // Assign the fetched username
+        $user_name = htmlspecialchars($user['username']); // Escape to prevent XSS
     } else {
         $user_name = 'Guest'; // Default value if no user is found
     }
 
     $stmt->close();
 
-    // Fetch all events
-    $sql = "SELECT id, event_title FROM events"; // Fetch all events for admin
-    $eventResult = $conn->query($sql);
-    $events = [];
+    // Fetch all events (remove the user_id filter to fetch all events)
+    $sql = "SELECT id, event_title FROM events";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $eventResult = $stmt->get_result();
 
+    $events = [];
     while ($row = $eventResult->fetch_assoc()) {
         $events[] = $row;
     }
+
+    $stmt->close();
+
+    // Initialize sentiment counts
+    $positiveCount = $neutralCount = $negativeCount = 0;
 
     // Check if an event is selected
     if (isset($_POST['event_id'])) {
         $event_id = $_POST['event_id'];
 
-        // Fetch the attendance data for the selected event
+        // Fetch attendance data for the selected event
         $sql = "SELECT COUNT(*) as count FROM bookings WHERE event_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $event_id);
@@ -88,21 +95,47 @@ if (isset($_SESSION['user_id'])) {
             $ratingStmt = $conn->prepare($ratingsSql);
             $ratingStmt->bind_param("ii", $event_id, $question_id);
             $ratingStmt->execute();
-            $ratingResult = $ratingStmt->get_result();
+            $ratingStmt->bind_result($ratingCount, $ratingValue);
 
+            // Initialize ratings
             $ratings = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
-            while ($ratingRow = $ratingResult->fetch_assoc()) {
-                $ratings[$ratingRow['rating']] = $ratingRow['count'];
+            while ($ratingStmt->fetch()) {
+                $ratings[$ratingValue] = $ratingCount;
             }
 
             $questions[] = [
-                'question_text' => $row['question_text'],
+                'question_text' => htmlspecialchars($row['question_text']), // Escape to prevent XSS
                 'ratings' => array_values($ratings) // Flattening the array
             ];
 
             $ratingStmt->close();
         }
         $questionStmt->close();
+
+        // Fetch user feedback for the selected event
+        $sentimentSql = "SELECT feedback FROM OverallFeedback WHERE event_id = ? AND feedback IS NOT NULL";
+        $stmt = $conn->prepare($sentimentSql);
+        $stmt->bind_param("i", $event_id);
+        $stmt->execute();
+        $feedbackResult = $stmt->get_result();
+
+        $feedbackList = [];
+        while ($row = $feedbackResult->fetch_assoc()) {
+            $feedbackList[] = $row['feedback'];
+        }
+        $stmt->close();
+
+        // Simple sentiment analysis logic
+        foreach ($feedbackList as $feedback) {
+            $feedback = strtolower($feedback);
+            if (strpos($feedback, 'good') !== false || strpos($feedback, 'excellent') !== false || strpos($feedback, 'great') !== false) {
+                $positiveCount++;
+            } elseif (strpos($feedback, 'bad') !== false || strpos($feedback, 'terrible') !== false || strpos($feedback, 'poor') !== false) {
+                $negativeCount++;
+            } else {
+                $neutralCount++;
+            }
+        }
     }
 
     $conn->close();
@@ -110,29 +143,18 @@ if (isset($_SESSION['user_id'])) {
     $user_name = 'Guest'; // Default value if the user is not logged in
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Organizer Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="OrganizerDashboard.css"> <!-- Link to your CSS file -->
-    <style>
-        /* Add some basic styles */
-        .chart-container {
-            margin: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-        }
-        canvas {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
 </head>
+<body>
+
 <header class="header">
     <div class="navigation">
         <div class="brand">
@@ -143,6 +165,7 @@ if (isset($_SESSION['user_id'])) {
             <a href="AdminAddEvent.php" class="nav-link">Create Event</a>
             <a href="AdminSelectEvent.php" class="nav-link">Edit Event</a>
             <a href="OrganizerRegistration.php" class="nav-link">Create account</a>
+            <a href="AdminScanQRCode.php" class="nav-link">Scan QR</a>
             <a href="AdminProfile.php" class="nav-link">Profile</a>
         </nav>
         <div class="button-container">
@@ -163,9 +186,8 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
 </header>
-<body>
 
-<form method="POST">
+<form method="POST" action="OrganizerDashboard.php">
     <label for="event_id">Select Event:</label>
     <select name="event_id" id="event_id">
         <?php foreach ($events as $event): ?>
@@ -184,73 +206,66 @@ if (isset($_SESSION['user_id'])) {
             <canvas id="attendanceChart"></canvas>
         </div>
 
-        <?php foreach ($questions as $index => $question): ?>
         <div class="chart-container">
-            <canvas id="questionChart<?php echo $index; ?>"></canvas>
+            <h2>Sentiment Analysis Overview</h2>
+            <canvas id="sentimentChart"></canvas>
         </div>
-        <?php endforeach; ?>
+
+        <div class="charts">
+            <?php foreach ($questions as $index => $question): ?>
+                <div class="chart-container">
+                    <h3>Ratings for: <?php echo $question['question_text']; ?></h3>
+                    <canvas id="ratingChart<?php echo $index; ?>"></canvas>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
-
-    <script>
-        var ctx = document.getElementById('attendanceChart').getContext('2d');
-        var attendanceChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Total Bookings', 'Attended', 'Missed'],
-                datasets: [{
-                    label: 'Event Attendance Details',
-                    data: [
-                        <?php echo $totalBookings; ?>,
-                        <?php echo $totalAttendance; ?>,
-                        <?php echo $totalMissed; ?>
-                    ],
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Event Attendance Overview'
-                    }
-                }
-            }
-        });
-
-        <?php foreach ($questions as $index => $question): ?>
-        var ctx<?php echo $index; ?> = document.getElementById('questionChart<?php echo $index; ?>').getContext('2d');
-        var questionChart<?php echo $index; ?> = new Chart(ctx<?php echo $index; ?>, {
-            type: 'pie',
-            data: {
-                labels: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
-                datasets: [{
-                    label: '<?php echo htmlspecialchars($question['question_text']); ?> Ratings',
-                    data: <?php echo json_encode($question['ratings']); ?>,
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0'],
-                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: '<?php echo htmlspecialchars($question['question_text']); ?> Ratings'
-                    }
-                }
-            }
-        });
-        <?php endforeach; ?>
-    </script>
 <?php endif; ?>
+
+<script>
+    // Create the charts with Chart.js
+    document.addEventListener("DOMContentLoaded", function () {
+        <?php if (isset($event_id)): ?>
+            // Attendance chart
+            var attendanceChart = new Chart(document.getElementById('attendanceChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Attended', 'Missed'],
+                    datasets: [{
+                        data: [<?php echo $totalAttendance; ?>, <?php echo $totalMissed; ?>],
+                        backgroundColor: ['#36A2EB', '#FF5733']
+                    }]
+                }
+            });
+
+            // Sentiment analysis chart
+            var sentimentChart = new Chart(document.getElementById('sentimentChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Positive', 'Negative', 'Neutral'],
+                    datasets: [{
+                        data: [<?php echo $positiveCount; ?>, <?php echo $negativeCount; ?>, <?php echo $neutralCount; ?>],
+                        backgroundColor: ['#28a745', '#dc3545', '#ffc107']
+                    }]
+                }
+            });
+
+            // Rating charts for each question
+            <?php foreach ($questions as $index => $question): ?>
+                new Chart(document.getElementById('ratingChart<?php echo $index; ?>'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
+                        datasets: [{
+                            data: <?php echo json_encode($question['ratings']); ?>,
+                            backgroundColor: ['#FF5733', '#FF8C00', '#FFD700', '#90EE90', '#28a745']
+                        }]
+                    }
+                });
+            <?php endforeach; ?>
+        <?php endif; ?>
+    });
+</script>
 
 </body>
 </html>
