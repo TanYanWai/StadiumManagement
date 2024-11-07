@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home Page</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="Login.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    </head>
+    <body>
+<header class="header">
+    <!-- Navigation Bar -->
+    <div class="navigation">
+        <div class="brand">
+            <a href=" " class="logo"><i class="fas fa-heartbeat"></i><b>BookMyTicket</b></a >
+        </div>
+    </div>
+</header>
+<main>
+    <div class="login-container">
+       <div class="login-box">
+            <h4>Log In</h4>
+            <form action="Login.php" method="post">
+                <div class="input-group">
+                    <label for="username">Username or Email:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <h6>Password is at least 6 characters, contain at least one digit and one alphabetic character.</h6>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="remember-me" name="remember-me">
+                    <label for="remember-me">Remember Me</label>
+                    <a href="ForgotPassword.html" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+                <a href="SignUp.html" class="SignUp">No account yet? Create now!</a>
+            </form>
+        </div> 
+    </div>
+    <div class="footerbox">
+        <p>Malaysia . Penang</p>
+    </div>
+</main>
+</body>
+</html>
+

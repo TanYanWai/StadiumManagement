@@ -1,0 +1,172 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,500;1,400;1,600;1,700&display=swap');
+
+* {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+html, body {
+    background-color: #FEF3E2; /* Light background color for the whole page */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column; /* Arrange children (main and footer) vertically */
+}
+
+.header {
+    background-color: #000; /* Dark background color for the header */
+    padding: 10px 20px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space out items */
+    width: 100%; /* Full width of the page */
+    z-index: 1000; /* Ensure the header stays above other content */
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Add padding for better spacing */
+}
+
+.stadium-container {
+    text-align: center; /* Center the title and content */
+}
+
+.stadium-layout {
+    position: relative; /* Relative positioning for child elements */
+    width: 400px; /* Fixed width for the layout */
+    height: 400px; /* Fixed height for the layout */
+    border: 2px solid #292929; /* Border around the stadium layout */
+    border-radius: 50%; /* Circular layout */
+    margin: 0 auto; /* Center horizontally */
+    overflow: hidden; /* Prevent overflow */
+    background-color: #fff; /* White background for sections */
+}
+
+.stage {
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    background-color: #f00; /* Red stage for visibility */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the stage */
+    border-radius: 10px; /* Rounded edges for stage */
+}
+
+.section {
+    position: absolute;
+    width: 50px; /* Width of the section */
+    height: 50px; /* Height of the section */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff; /* Section background color */
+    color: #fff; /* Text color */
+    border-radius: 50%; /* Circular sections */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.section:hover {
+    background-color: #0056b3; /* Darker color on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.footerbox {
+    background-color: #000; /* Dark background for footer */
+    color: #fff; /* White text */
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Styles for the navigation and button container */
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.search-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    background-color: #f1f1f1;
+}
+
+.search-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: 20px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #fff;
+    background-color: #292929;
+    padding: 10px 20px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+    background-color: #3c3c3c;
+    transform: scale(1.05);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-left: 20px;
+}
+
+.ProfileContainer {
+    display: block;
+    padding: 10px 20px; 
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.ProfileContainer:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}
