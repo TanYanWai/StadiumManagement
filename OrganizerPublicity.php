@@ -78,7 +78,7 @@ if (isset($_POST['event_id'])) {
 $conn->close();
 
 // Prepare event URL if an event is selected
-$event_url = isset($event) ? "https://www.bookmyevent.com/event.php?id=" . $eventId : '';
+$event_url = isset($event) ? "https://www.bookmyevent.com/ViewEvent.php?id=" . $eventId : '';
 ?>
 
 <!DOCTYPE html>

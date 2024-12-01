@@ -7,12 +7,31 @@ $username = "root";
 $password = "root"; 
 $dbname = "FYP_BookMyTicket"; 
 
-// Create a connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check the connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
+}
+
+// Initialize organizer name with a default value
+$organizer_name = "Guest";
+
+// Fetch organizer's name if logged in
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id']; // Use the session variable
+
+    $sql = "SELECT username FROM users WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $organizer_name = $row['username'] ?? "Organizer"; // Fallback to "Organizer" if username is null
+    }
+    $stmt->close();
 }
 
 // Fetch the event ID from the URL
@@ -29,25 +48,20 @@ $seat_types = ['Elite', 'Premium', 'Standard', 'Normal']; // Define seat types
 
 // Handle form submission for seat prices
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Store seat prices in the database
     foreach ($_POST['seat_type'] as $row => $seat_type) {
-        // Retrieve seat price using the row index
         $price = floatval($_POST['seat_price'][$seat_type]); // Get price for the current seat type
 
-        // Ensure the price is not empty
         if ($price === 0) {
             echo "Price for row $row cannot be zero. Please enter a valid price.<br>";
             continue; // Skip this iteration if the price is invalid
         }
 
-        // Calculate seat numbers for the current row
         $seat_start = ($row - 1) * $seats_per_row + 1; // Start of seat range for this row
         $seat_end = $row * $seats_per_row; // End of seat range for this row
 
         $seat_type = $conn->real_escape_string($seat_type);
         $price = $conn->real_escape_string($price);
-        
-        // Insert or update seat prices for all seats in the row
+
         for ($seat_number = $seat_start; $seat_number <= $seat_end; $seat_number++) {
             $sql = "INSERT INTO seat_prices (event_id, `row_number`, seat_type, seat_price)
                     VALUES ('$event_id', '$row', '$seat_type', '$price')
@@ -60,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Redirect after successful submission
-    header("Location: OrgainzerDashboard.php");
+    header("Location: OrganizerDashboard.php");
     exit();
 }
 
@@ -92,14 +106,12 @@ $conn->close();
         </nav>
         <div class="button-container">
             <?php if (isset($_SESSION['user_id'])): ?>
-                <!-- If the organizer is logged in, display the username as a link to the Profile page -->
                 <div class="ProfileContainer">
                     <a href="OrganizerProfile.php" id="organizerProfileLink">
-                        <?php echo htmlspecialchars($organizer_name); ?>!
+                        <?php echo htmlspecialchars($organizer_name ?? "Guest", ENT_QUOTES, 'UTF-8'); ?>
                     </a>
                 </div>
             <?php else: ?>
-                <!-- If the user is not logged in, show the login and sign-up buttons -->
                 <div class="UserLoginButton">
                     <a href="Login.html" id="Login" class="buttonLog">Login</a>
                 </div>
@@ -111,47 +123,46 @@ $conn->close();
     </div>
 </header>
 
-    <main>
-        <div class="edit-seat-container">
-            <h1>Edit Seat Prices for Event ID: <?php echo $event_id; ?></h1>
+<main>
+    <div class="edit-seat-container">
+        <h1>Edit Seat Prices for Event ID: <?php echo $event_id; ?></h1>
+        <form method="POST" action="">
+            <h2>Set Prices for Each Seat Type</h2>
+            <div class="seat-pricing">
+                <?php foreach ($seat_types as $type): ?>
+                    <div class="seat-type">
+                        <label for="<?php echo strtolower($type); ?>_price"><?php echo $type; ?> Price:</label>
+                        <input type="number" name="seat_price[<?php echo $type; ?>]" id="<?php echo strtolower($type); ?>_price" step="0.01" required>
+                    </div>
+                <?php endforeach; ?>
+            </div>
             
-            <form method="POST" action="">
-                <h2>Set Prices for Each Seat Type</h2>
-                <div class="seat-pricing">
-                    <?php foreach ($seat_types as $type): ?>
-                        <div class="seat-type">
-                            <label for="<?php echo strtolower($type); ?>_price"><?php echo $type; ?> Price:</label>
-                            <input type="number" name="seat_price[<?php echo $type; ?>]" id="<?php echo strtolower($type); ?>_price" step="0.01" required>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                
-                <h2>Select Seat Type for Each Row</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Row Number</th>
-                            <th>Seat Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php for ($row = 1; $row <= $rows; $row++): ?>
-                        <tr>
-                            <td><?php echo "Row $row"; ?></td>
-                            <td>
-                                <select name="seat_type[<?php echo $row; ?>]" required>
-                                    <?php foreach ($seat_types as $type): ?>
-                                    <option value="<?php echo $type; ?>"><?php echo $type; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </td>
-                        </tr>
-                        <?php endfor; ?>
-                    </tbody>
-                </table>
-                <button type="submit">Save Prices</button>
-            </form>
-        </div>
-    </main>
+            <h2>Select Seat Type for Each Row</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Row Number</th>
+                        <th>Seat Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php for ($row = 1; $row <= $rows; $row++): ?>
+                    <tr>
+                        <td><?php echo "Row $row"; ?></td>
+                        <td>
+                            <select name="seat_type[<?php echo $row; ?>]" required>
+                                <?php foreach ($seat_types as $type): ?>
+                                <option value="<?php echo $type; ?>"><?php echo $type; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <?php endfor; ?>
+                </tbody>
+            </table>
+            <button type="submit">Save Prices</button>
+        </form>
+    </div>
+</main>
 </body>
 </html>

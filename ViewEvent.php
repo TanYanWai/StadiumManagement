@@ -136,9 +136,14 @@ if ($result->num_rows > 0) {
     <div class="container">
         <!-- Display Event Poster -->
         <div class="event-poster">
-            <?php if (!empty($event['event_poster'])): ?>
-                <img src="uploads/<?php echo htmlspecialchars($event['event_poster']); ?>" alt="Event Poster" style="width:100%; max-height:400px;">
-            <?php endif; ?>
+            <?php 
+            $posterPath = !empty($event['event_poster']) ? "uploads/" . $event['event_poster'] : "uploads/default-poster.jpg";
+            if (!file_exists($posterPath)) {
+                error_log("Image not found: $posterPath");
+                $posterPath = "uploads/default-poster.jpg"; // Fallback poster
+            }
+            ?>
+            <img src="<?php echo htmlspecialchars($posterPath); ?>" alt="Event Poster" style="width:100%; max-height:400px;">
         </div>
 
         <!-- Event Title and Description -->
@@ -149,24 +154,48 @@ if ($result->num_rows > 0) {
             </div>
 
             <!-- Event Images Section -->
-<?php if (!empty($event_images)): ?>
-    <div class="image-display-container">
-        <!-- Main Image -->
-        <div class="main-image-container">
-            <img id="mainImage" src="uploads/<?php echo urlencode($event_images[0]); ?>" alt="Event Image" class="main-event-image">
-        </div>
-
-        <!-- Thumbnails -->
-        <div class="thumbnail-container">
-            <?php foreach ($event_images as $image): ?>
-                <img src="uploads/<?php echo urlencode($image); ?>" alt="Event Thumbnail" class="event-thumbnail" onclick="changeMainImage(this)">
-            <?php endforeach; ?>
-        </div>
-    </div>
-<?php else: ?>
-    <p>No additional images available for this event.</p>
-<?php endif; ?>
-
+            <?php if (!empty($event_images)): ?>
+                <div class="image-display-container">
+                    <div class="main-image-container">
+                        <?php
+                        // Decode JSON data for event images if it exists
+                        $images = json_decode($event_images[0], true); // Decode the first image path
+                        if (is_array($images)) {
+                            $mainImagePath = "uploads/" . $images[0]; // Get the first image from the array
+                        } else {
+                            $mainImagePath = "uploads/default-thumbnail.jpg"; // Fallback image
+                        }
+                        ?>
+                        <img id="mainImage" src="<?php echo htmlspecialchars($mainImagePath); ?>" alt="Event Image" class="main-event-image">
+                    </div>
+                    <div class="thumbnail-container">
+                        <?php 
+                        $defaultImage = "uploads/default-thumbnail.jpg";
+                        foreach ($event_images as $image): 
+                            // Decode JSON-encoded images
+                            $imagePaths = json_decode($image, true);
+                            if (is_array($imagePaths)) {
+                                foreach ($imagePaths as $img) {
+                                    $imagePath = "uploads/" . $img;
+                                    if (!file_exists($imagePath)) {
+                                        error_log("Image not found: $imagePath");
+                                        $imagePath = $defaultImage;
+                                    }
+                                    ?>
+                                    <img src="<?php echo htmlspecialchars($imagePath); ?>" 
+                                         alt="Event Thumbnail" 
+                                         class="event-thumbnail" 
+                                         onclick="changeMainImage(this)">
+                                    <?php
+                                }
+                            }
+                        endforeach; 
+                        ?>
+                    </div>
+                </div>
+            <?php else: ?>
+                <p>No additional images available for this event.</p>
+            <?php endif; ?>
 
             <!-- Event Information (Date, Time, Contact Details) -->
             <div class="event-info">
@@ -189,23 +218,17 @@ if ($result->num_rows > 0) {
                 <p><strong>Category:</strong> <?php echo htmlspecialchars($event['event_category']); ?></p>
                 <p><strong>Contact Person:</strong> <?php echo htmlspecialchars($event['contact_person']); ?></p>
                 <p><strong>Contact Number:</strong> <?php echo htmlspecialchars($event['contact_number']); ?></p>
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($event['email']); ?></p>
+                <p><strong>Email:</strong> <a href="mailto:<?php echo htmlspecialchars($event['email']); ?>"><?php echo htmlspecialchars($event['email']); ?></a></p>
             </div>
-        </div>
-
-        <!-- Terms and Conditions -->
-        <div class="terms-container">
-            <h2>Event Terms</h2>
-            <p><?php echo nl2br(htmlspecialchars($event['event_terms'])); ?></p>
         </div>
     </div>
 </main>
 
+<!-- JavaScript to change main image on thumbnail click -->
 <script>
-    function changeMainImage(thumbnail) {
-        document.getElementById("mainImage").src = thumbnail.src;
-    }
+function changeMainImage(element) {
+    document.getElementById("mainImage").src = element.src;
+}
 </script>
-
 </body>
 </html>

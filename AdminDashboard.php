@@ -197,6 +197,7 @@ if (isset($_SESSION['user_id'])) {
         <?php endforeach; ?>
     </select>
     <input type="submit" value="Show Charts">
+    <a href="AdminDisplayMessage.php" class="button" style="display: inline-block; padding: 8px 15px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 4px; margin-left: 10px;">Manage Messages</a>
 </form>
 
 <?php if (isset($event_id)): ?>

@@ -18,6 +18,25 @@ $email = $_POST['email'];
 $phonenumber = $_POST['phonenumber'];
 $raw_password = $_POST['password']; // Raw password from form (will be hashed)
 
+// Validation
+// Validate username (must not be empty and have a minimum length)
+if (empty($username) || strlen($username) < 3) {
+    echo "<script>alert('Username must be at least 3 characters long.'); window.location.href='SignUp.html';</script>";
+    exit();
+}
+
+// Validate email format
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo "<script>alert('Invalid email format. Please enter a valid email address.'); window.location.href='SignUp.html';</script>";
+    exit();
+}
+
+// Validate phone number (basic validation for digits and length)
+if (!preg_match('/^\d{10}$/', $phonenumber)) {
+    echo "<script>alert('Phone number must be exactly 10 digits.'); window.location.href='SignUp.html';</script>";
+    exit();
+}
+
 // Password validation
 if (!preg_match('/[A-Za-z]/', $raw_password) || !preg_match('/\d/', $raw_password) || strlen($raw_password) < 6) {
     echo "<script>alert('Password must be at least 6 characters long, contain at least one letter and one number.'); window.location.href='SignUp.html';</script>";

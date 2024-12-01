@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.header {
+    background-color: #007BFF;
+    padding: 15px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .brand {
+    font-size: 20px;
+}
+
+.header .nav {
+    display: flex;
+    gap: 15px;
+}
+
+.header .nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header .nav a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.container h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.message-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.message-table th, .message-table td {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.message-table th {
+    background-color: #007BFF;
+    color: white;
+}
+
+.message-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.message-table tbody tr:hover {
+    background-color: #f1f1f1;
+}

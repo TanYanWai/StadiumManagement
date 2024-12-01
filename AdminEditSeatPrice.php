@@ -1,13 +1,6 @@
 <?php
 session_start();
 
-// Check if the organizer is logged in
-if (!isset($_SESSION['user_id'])) {
-    // If the organizer is not logged in, redirect to login page
-    header("Location: Login.html");
-    exit();
-}
-
 // Database connection
 $servername = "localhost"; 
 $username = "root"; 
@@ -16,10 +9,11 @@ $dbname = "FYP_BookMyTicket";
 
 // Create a connection
 $conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check the connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
 
 // Fetch the event ID from the URL
 if (isset($_GET['id'])) {
@@ -27,24 +21,6 @@ if (isset($_GET['id'])) {
 } else {
     die("No event ID specified.");
 }
-
-// Fetch organizer information based on the logged-in user_id
-$user_id = $_SESSION['user_id'];
-$userSql = "SELECT username, email, phonenumber, created_at FROM users WHERE id = ?";
-$stmt = $conn->prepare($userSql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    $organizer = $result->fetch_assoc();
-    $organizer_name = $organizer['username']; // Assign the username to $organizer_name variable
-} else {
-    echo "Organizer not found!";
-    exit();
-}
-
-$stmt->close();
 
 // Set default values for rows and seats
 $rows = 10; // 10 rows, each containing 25 seats (so 250 seats in total)
@@ -55,7 +31,7 @@ $seat_types = ['Elite', 'Premium', 'Standard', 'Normal']; // Define seat types
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Store seat prices in the database
     foreach ($_POST['seat_type'] as $row => $seat_type) {
-        // Retrieve seat price using the seat type from the POST data
+        // Retrieve seat price using the row index
         $price = floatval($_POST['seat_price'][$seat_type]); // Get price for the current seat type
 
         // Ensure the price is not empty
@@ -84,9 +60,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Redirect after successful submission
-    header("Location: AdminDashboardt.html");
+    header("Location: AdminDashboard.php");
+
     exit();
 }
+
+// Fetch the organizer's name if logged in
+$organizer_name = null; // Default value
+if (isset($_SESSION['user_id'])) {
+    $user_id = intval($_SESSION['user_id']); // Get user ID from the session
+
+    // Query to get organizer's name
+    $sql = "SELECT username FROM users WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $organizer_name = $row['username'] ?? 'Organizer';
+    }
+}
+
+// Close the database connection
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -113,12 +111,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </nav>
         <div class="button-container">
             <?php if (isset($_SESSION['user_id'])): ?>
+                <!-- If the organizer is logged in, display the username as a link to the Profile page -->
                 <div class="ProfileContainer">
                     <a href="OrganizerProfile.php" id="organizerProfileLink">
                         <?php echo htmlspecialchars($organizer_name); ?>!
                     </a>
                 </div>
             <?php else: ?>
+                <!-- If the user is not logged in, show the login and sign-up buttons -->
                 <div class="UserLoginButton">
                     <a href="Login.html" id="Login" class="buttonLog">Login</a>
                 </div>

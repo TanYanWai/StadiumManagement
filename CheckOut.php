@@ -36,9 +36,56 @@ $event_date = isset($_POST['event_date']) ? $_POST['event_date'] : '';
 $section_id = isset($_POST['section_id']) ? $_POST['section_id'] : ''; // Get section ID
 $event_id = isset($_POST['event_id']) ? $_POST['event_id'] : ''; // Get event ID
 
-// Define seat price (Assuming a fixed price for simplicity; you can fetch it from the database if needed)
-$seatPrice = 100; // Example price for each seat
-$totalPrice = count($selectedSeats) * $seatPrice;
+// Initialize total price
+$totalPrice = 0;
+
+// Ensure the selected seats and event_id are provided
+if (!empty($selectedSeats) && $event_id) {
+    // Prepare the SQL query to fetch row prices
+    $sql = "SELECT seat_price FROM seat_prices WHERE event_id = ? AND `row_number` = ?";
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt === false) {
+        die("Prepare failed: " . $conn->error);
+    }
+
+    // Extract unique row numbers from selected seats
+    $rowCounts = []; // Array to store the count of seats selected per row
+    foreach ($selectedSeats as $seat) {
+        // Extract row number from seat string (e.g., "1-12" -> 1)
+        $rowNumber = (int)explode('-', $seat)[0];
+        if (!isset($rowCounts[$rowNumber])) {
+            $rowCounts[$rowNumber] = 0;
+        }
+        $rowCounts[$rowNumber]++;
+    }
+
+    // Fetch seat prices for each unique row
+    foreach ($rowCounts as $rowNumber => $seatCount) {
+        // Log the query for debugging
+        error_log("Fetching price for event_id: $event_id and row_number: $rowNumber");
+
+        $stmt->bind_param("ii", $event_id, $rowNumber);
+
+        if (!$stmt->execute()) {
+            die("Execute failed: " . $stmt->error);
+        }
+
+        $stmt->bind_result($seatPrice);
+        if ($stmt->fetch()) {
+            // Add the total price for seats in this row
+            $totalPrice += $seatPrice * $seatCount;
+        } else {
+            error_log("No seat price found for row_number: $rowNumber");
+            $totalPrice += 100 * $seatCount; // Default price for missing rows
+        }
+    }
+    $stmt->close();
+}
+
+// Log final total price for debugging
+error_log("Total price calculated: $totalPrice");
+
 
 // Check if user name is fetched; if not, set to 'Guest'
 $user_name = $user_name ?: 'Guest';
@@ -108,8 +155,3 @@ $user_name = $user_name ?: 'Guest';
     </div>
 </body>
 </html>
-
-<?php
-// Close the database connection
-$conn->close();
-?> 

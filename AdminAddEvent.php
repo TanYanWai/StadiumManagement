@@ -1,7 +1,7 @@
 <?php
 session_start(); // Start the session
 
-// Check if the user is logged in by verifying the session
+// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: Login.html");
     exit();
@@ -10,10 +10,10 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id']; // Get the logged-in user's ID from the session
 
 // Database connection parameters
-$servername = "localhost"; 
-$username = "root"; 
-$password = "root"; 
-$dbname = "FYP_BookMyTicket"; 
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "FYP_BookMyTicket";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 }
 
 // Fetch admin information
-$admin_name = ""; // Initialize the variable to avoid warnings
+$admin_name = ""; // Initialize the variable
 $userSql = "SELECT username FROM users WHERE id = ?";
 $stmt = $conn->prepare($userSql);
 $stmt->bind_param("i", $userId);
@@ -32,11 +32,12 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $admin = $result->fetch_assoc();
-    $admin_name = $admin['username'] ?? ''; // Assign the username to $admin_name variable or empty string if null
+    $admin_name = $admin['username'] ?? ''; // Assign username to $admin_name
 }
 
 // Handle the form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize and validate inputs
     $eventTitle = $conn->real_escape_string($_POST['event_title']);
     $eventDescription = $conn->real_escape_string($_POST['event_description']);
     $eventCategory = $conn->real_escape_string($_POST['event_category']);
@@ -44,29 +45,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contactNumber = $conn->real_escape_string($_POST['contact_number']);
     $email = $conn->real_escape_string($_POST['email']);
     $eventTerms = $conn->real_escape_string($_POST['event_terms']);
-    
-    // Get event time details
     $eventTimeFrom = $conn->real_escape_string($_POST['event_time_from']);
     $eventTimeTo = $conn->real_escape_string($_POST['event_time_to']);
 
-    // Handle multiple event dates
-    if (isset($_POST['event_dates']) && is_array($_POST['event_dates'])) {
-        $eventDate = $conn->real_escape_string($_POST['event_dates'][0]); // Get the first event date
-    } else {
-        die("No event dates provided.");
+    // Validate required fields
+    if (empty($eventTitle) || empty($eventDescription) || empty($contactPerson) || empty($contactNumber) || empty($email) || empty($eventTimeFrom) || empty($eventTimeTo)) {
+        die("All fields are required.");
     }
 
-    // Insert event details into events table
+    // Validate text inputs
+    if (strlen($eventTitle) > 100 || !preg_match('/^[a-zA-Z0-9\s]+$/', $eventTitle)) {
+        die("Invalid event title. Only letters, numbers, and spaces are allowed, and it must not exceed 100 characters.");
+    }
+    if (strlen($contactPerson) > 50 || !preg_match('/^[a-zA-Z\s]+$/', $contactPerson)) {
+        die("Invalid contact person name. Only letters and spaces are allowed, and it must not exceed 50 characters.");
+    }
+
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Invalid email format.");
+    }
+
+    // Validate contact number format
+    if (!preg_match('/^\d{10}$/', $contactNumber)) {
+        die("Invalid contact number. It should be a 10-digit number.");
+    }
+
+    // Validate event time
+    if ($eventTimeFrom >= $eventTimeTo) {
+        die("Event start time must be earlier than the end time.");
+    }
+
+    // Handle event dates
+    if (isset($_POST['event_dates']) && is_array($_POST['event_dates']) && !empty($_POST['event_dates'][0])) {
+        $eventDate = $conn->real_escape_string($_POST['event_dates'][0]); // Use the first date
+
+        // Validate date format
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $eventDate)) {
+            die("Invalid date format. Use YYYY-MM-DD.");
+        }
+    } else {
+        die("Please provide at least one valid event date.");
+    }
+
+    // Insert event details into the database
     $sql = "INSERT INTO events (user_id, event_title, event_date, event_time_from, event_time_to, event_description, event_category, contact_person, contact_number, email, event_terms)
             VALUES ('$userId', '$eventTitle', '$eventDate', '$eventTimeFrom', '$eventTimeTo', '$eventDescription', '$eventCategory', '$contactPerson', '$contactNumber', '$email', '$eventTerms')";
 
     if ($conn->query($sql) === TRUE) {
         $eventId = $conn->insert_id; // Get the ID of the inserted event
 
-        // Handle multiple event dates
+        // Insert additional event dates into the event_dates table
         if (isset($_POST['event_dates']) && is_array($_POST['event_dates'])) {
-            foreach ($_POST['event_dates'] as $eventDate) {
-                $eventDate = $conn->real_escape_string($eventDate);
+            foreach ($_POST['event_dates'] as $date) {
+                $eventDate = $conn->real_escape_string($date);
+
+                // Validate date format
+                if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $eventDate)) {
+                    die("Invalid date format. Use YYYY-MM-DD.");
+                }
+
                 $dateSql = "INSERT INTO event_dates (event_id, event_date) VALUES ('$eventId', '$eventDate')";
                 if (!$conn->query($dateSql)) {
                     echo "Error inserting event date: " . $conn->error;
@@ -81,32 +119,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $posterName = basename($_FILES['event_poster']['name']);
             $posterPath = $targetDir . $posterName;
             if (!move_uploaded_file($_FILES['event_poster']['tmp_name'], $posterPath)) {
-                echo "Error uploading poster file: " . $posterName . "<br>";
+                echo "Error uploading poster file.";
             }
         }
 
-        // Handle event images upload
-        $imagePaths = [];
-        if (isset($_FILES['event_images']) && $_FILES['event_images']['error'][0] == UPLOAD_ERR_OK) {
-            foreach ($_FILES['event_images']['tmp_name'] as $key => $tmpName) {
-                $fileName = basename($_FILES['event_images']['name'][$key]);
-                $imagePath = $targetDir . $fileName;
-                if (move_uploaded_file($tmpName, $imagePath)) {
-                    $imagePaths[] = $fileName; // Add image to array for later insertion
-                } else {
-                    echo "Error uploading image file: " . $fileName . "<br>";
-                }
-            }
-        }
-
-        // Insert poster and images into event_images table
-        $imagePathsJson = json_encode($imagePaths);
-        $mediaSql = "INSERT INTO event_images (event_id, event_poster, image_path) VALUES ('$eventId', '$posterName', '$imagePathsJson')";
-        if ($conn->query($mediaSql) !== TRUE) {
-            echo "Error inserting media paths: " . $conn->error;
-        }
-
-        // Redirect after successful submission with the event ID
+        // Redirect after successful submission
         header("Location: AdminEditSeatPrice.php?id=$eventId");
         exit();
     } else {
@@ -116,6 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -218,6 +236,89 @@ $conn->close();
     </div>
 </div>
 
-<script src="AdminAddEvent.js"></script>
+<script>
+document.getElementById('addDateButton').addEventListener('click', function() {
+    var dateInput = document.createElement('input');
+    dateInput.type = 'date';
+    dateInput.name = 'event_dates[]';
+    dateInput.required = true;
+    document.getElementById('eventDatesContainer').appendChild(dateInput);
+});
+
+document.querySelector('form').addEventListener('submit', function(e) {
+    let valid = true;
+
+    // Validate the number of uploaded images (Max 10)
+    var eventImages = document.querySelector('input[name="event_images[]"]');
+    if (eventImages && eventImages.files.length > 10) {
+        alert("You can upload a maximum of 10 images.");
+        valid = false;
+    }
+
+    // Validate that event_time_from is earlier than event_time_to
+    var eventTimeFrom = document.getElementById('eventTimeFrom').value;
+    var eventTimeTo = document.getElementById('eventTimeTo').value;
+    if (eventTimeFrom && eventTimeTo && eventTimeFrom >= eventTimeTo) {
+        alert("Event start time must be earlier than the end time.");
+        valid = false;
+    }
+
+    // Validate event poster size (1920x600 max)
+    var eventPoster = document.querySelector('input[name="event_poster"]');
+    if (eventPoster && eventPoster.files.length > 0) {
+        var file = eventPoster.files[0];
+        var img = new Image();
+        img.onload = function() {
+            if (img.width > 1920 || img.height > 600) {
+                alert("Event poster size must be 1920x600 pixels or smaller.");
+                valid = false;
+            }
+        };
+        img.src = URL.createObjectURL(file);
+    }
+
+    // Validate text inputs for length and characters
+    var eventTitle = document.getElementById('eventTitle').value.trim();
+    if (eventTitle.length > 100 || !/^[a-zA-Z0-9\s]+$/.test(eventTitle)) {
+        alert("Invalid event title. Only letters, numbers, and spaces are allowed, and it must not exceed 100 characters.");
+        valid = false;
+    }
+
+    var contactPerson = document.getElementById('contactPerson').value.trim();
+    if (contactPerson.length > 50 || !/^[a-zA-Z\s]+$/.test(contactPerson)) {
+        alert("Invalid contact person name. Only letters and spaces are allowed, and it must not exceed 50 characters.");
+        valid = false;
+    }
+
+    // Validate contact number format
+    var contactNumber = document.getElementById('contactNumber').value.trim();
+    if (!/^\d{10}$/.test(contactNumber)) {
+        alert("Invalid contact number. It should be a 10-digit number.");
+        valid = false;
+    }
+
+    // Validate email format
+    var email = document.getElementById('email').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert("Invalid email format.");
+        valid = false;
+    }
+
+    // Check for empty required fields
+    var requiredFields = document.querySelectorAll('[required]');
+    requiredFields.forEach(function(field) {
+        if (!field.value.trim()) {
+            alert("Please fill out all required fields.");
+            valid = false;
+        }
+    });
+
+    // Prevent form submission if any validation fails
+    if (!valid) {
+        e.preventDefault();
+    }
+});
+</script>
+
 </body>
 </html>

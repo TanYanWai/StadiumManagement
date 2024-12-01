@@ -39,6 +39,7 @@ $event_id = isset($_POST['event_id']) ? $_POST['event_id'] : '';
 $seatPrice = 100; // Example price for each seat
 $totalPrice = count($selectedSeats) * $seatPrice;
 
+
 $stmt->close();
 $conn->close();
 ?>

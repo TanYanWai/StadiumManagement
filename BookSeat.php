@@ -1,5 +1,5 @@
 <?php
-session_start(); // Make sure to start the session
+session_start();
 
 // Check if the user is logged in
 if (isset($_SESSION['user_id'])) {
@@ -83,7 +83,6 @@ $stmtBooked->close();
 $conn->close();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,49 +129,60 @@ $conn->close();
         </div>
     </header>
     <div class="legend-container">
-    <h1>Book Your Seat for the Event</h1>
+        <h1>Book Your Seat for the Event</h1>
         <div class="legend">
             <span class="available">Available</span>
             <span class="booked">Booked</span>
             <span class="selected">Selected</span>
         </div>
     </div>
-        <form id="bookingForm" action="CheckOut.php" method="POST">
-            <div class="seat-container">
-                <?php for ($i = 1; $i <= 250; $i++): ?>
-                    <?php
-                    // Default seat status is available
-                    $seatStatus = 'available';
 
-                    // Check if the seat is booked
-                    if (in_array($i, $bookedSeats)) {
-                        $seatStatus = 'booked'; // Mark the seat as booked
-                    }
-                    ?>
-                    <div class="seat <?php echo $seatStatus; ?>" data-seat-number="<?php echo $i; ?>" onclick="selectSeat(this)">
-                        <?php echo $i; ?>
-                    </div>
-                <?php endfor; ?>
-            </div>
+    <form id="bookingForm" action="CheckOut.php" method="POST">
+        <div class="seat-container">
+            <?php for ($i = 1; $i <= 250; $i++): ?>
+                <?php
+                // Default seat status is available
+                $seatStatus = 'available';
 
-            <!-- Display Event Days -->
-            <div class="event-days">
-                <p>Event Day: <?php echo $event_date; ?></p>
-                <input type="hidden" name="event_date" value="<?php echo $event_date; ?>">
-            </div>
+                // Check if the seat is booked
+                if (in_array($i, $bookedSeats)) {
+                    $seatStatus = 'booked'; // Mark the seat as booked
+                }
+                ?>
+                <div class="seat <?php echo $seatStatus; ?>" data-seat-number="<?php echo $i; ?>" onclick="selectSeat(this)">
+                    <?php echo $i; ?>
+                </div>
+            <?php endfor; ?>
+        </div>
 
-            <input type="hidden" name="selected_seats" id="selectedSeats" value="">
-            <input type="hidden" name="section_id" value="<?php echo htmlspecialchars($section_id); ?>"> <!-- Added section ID -->
-            <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($event_id); ?>"> <!-- Ensure this is present -->
-            <button type="submit" class="confirm-button">Confirm Booking</button>
-        </form>
-    </main>
+        <!-- Display Event Days -->
+        <div class="event-days">
+            <p>Event Day: <?php echo $event_date; ?></p>
+            <input type="hidden" name="event_date" value="<?php echo $event_date; ?>">
+        </div>
+
+        <input type="hidden" name="selected_seats" id="selectedSeats" value="">
+        <input type="hidden" name="section_id" value="<?php echo htmlspecialchars($section_id); ?>"> <!-- Added section ID -->
+        <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($event_id); ?>"> <!-- Ensure this is present -->
+        <button type="submit" class="confirm-button">Confirm Booking</button>
+    </form>
 
     <div class="footerbox">
         <p>Malaysia . Penang</p>
     </div>
 
     <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            // Get the selected seats value
+            const selectedSeats = document.getElementById('selectedSeats').value;
+            
+            // If no seat is selected, prevent form submission
+            if (selectedSeats === '') {
+                event.preventDefault(); // Prevent form submission
+                alert("Please select at least one seat before proceeding.");
+            }
+        });
+
         function selectSeat(seat) {
             if (seat.classList.contains('booked')) {
                 alert("This seat is already booked.");

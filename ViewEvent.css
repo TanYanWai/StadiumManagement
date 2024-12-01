@@ -179,10 +179,28 @@ header {
     font-family: "Poppins", sans-serif;
 }
 
+.main-image-container {
+    width: 200px; /* Fixed width */
+    height: 200px; /* Fixed height */
+    position: relative; /* Necessary for positioning the image inside the container */
+    overflow: hidden; /* Ensure image does not overflow the square */
+    border: 2px solid #ddd; /* Optional: Add border for better visibility */
+    border-radius: 10px; /* Optional: Rounded corners for the square */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0; /* Add margin for spacing */
+}
+
+
 .main-event-image {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
+    position: absolute; /* Position the image absolutely inside the square */
+    top: 50%; /* Center the image vertically */
+    left: 50%; /* Center the image horizontally */
+    transform: translate(-50%, -50%); /* Offset to truly center the image */
+    width: 100%; /* Ensure the image fills the container */
+    height: 100%; /* Ensure the image fills the container */
+    object-fit: cover; /* Ensure the image covers the area of the square without distortion */
 }
 
 .event-thumbnail {
